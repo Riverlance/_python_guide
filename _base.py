@@ -1,5 +1,18 @@
 # Todo
 '''
+Basic book:
+https://penseallen.github.io/PensePython2e/
+GitHub: https://github.com/PenseAllen/PensePython2e
+
+Advanced book:
+https://pythonfluente.com/2/
+English edition: https://www.fluentpython.com/
+Examples: https://github.com/fluentpython/example-code-2e
+
+Docs:
+https://docs.python.org/pt-br/3.13/tutorial/
+Bitwise operators: http://wiki.python.org/moin/BitwiseOperators
+
 MySql
 https://www.youtube.com/playlist?list=PLzMcBGfZo4-l5kVSNVKGO60V6RkXAVtp-
 
@@ -26,12 +39,19 @@ https://www.youtube.com/watch?v=HBwMGVBLw_0&list=PLfCKf0-awunOu2WyLe2pSD2fXUo795
 Readmore: https://docs.python.org/pt-br/3/tutorial/index.html
 '''
 
-# Useful imports
-'''
-import dbm # Local file database ( https://www.youtube.com/watch?v=pHIRd7u3YS0&list=PLfCKf0-awunOu2WyLe2pSD2fXUo795xRe&index=78 )
-import pickle # Semelhante ao json, porém armazena também objetos facilmente ( https://www.youtube.com/watch?v=E-OVDyD7v8g&list=PLfCKf0-awunOu2WyLe2pSD2fXUo795xRe&index=79 )
-import shelve # Usa o pickle e dbm para armazenar objetos facilmente ( https://www.youtube.com/watch?v=jZpjyeDbQxI&list=PLfCKf0-awunOu2WyLe2pSD2fXUo795xRe&index=80 )
-'''
+
+
+# Use the code below to run the program for production.
+# It will ignore the assertions, which are used for debugging purposes.
+# It will also remove the docstrings, which are used for documentation purposes, to reduce the .pyc file size.
+# python -O <program_name>.py (optimize mode)
+
+# Use the code below to create a virtual environment.
+# python -m venv .venv
+
+# Run the server with the parameter below (Django example).
+# python manage.py runserver
+# python -O manage.py runserver # With optimizations (ignores assertions)
 
 
 
@@ -39,6 +59,34 @@ import shelve # Usa o pickle e dbm para armazenar objetos facilmente ( https://w
 
 # Aulas Python - 073 - Debugando programas usando o pdb
 # https://www.youtube.com/watch?v=XeEYs0KYzGE&list=PLfCKf0-awunOu2WyLe2pSD2fXUo795xRe&index=74
+
+
+
+# region Title of Folding Region
+# ... add your code here ...
+# endregion
+
+
+
+# pprint
+
+# For long values to be printed, use pprint instead of print.
+'''
+from pprint import pprint
+
+d    = { 'cat': 'gato', 'dog': 'cachorro', False: 0, True: 1,  }
+data = {'a': d, 'b': d, 'c': d, 'd': d}
+
+print(data)
+# {'a': {'cat': 'gato', 'dog': 'cachorro', False: 0, True: 1}, 'b': {'cat': 'gato', 'dog': 'cachorro', False: 0, True: 1}, 'c': {'cat': 'gato', 'dog': 'cachorro', False: 0, True: 1}, 'd': {'cat'
+: 'gato', 'dog': 'cachorro', False: 0, True: 1}}
+
+pprint(data)
+# {'a': {False: 0, True: 1, 'cat': 'gato', 'dog': 'cachorro'},
+#  'b': {False: 0, True: 1, 'cat': 'gato', 'dog': 'cachorro'},
+#  'c': {False: 0, True: 1, 'cat': 'gato', 'dog': 'cachorro'},
+#  'd': {False: 0, True: 1, 'cat': 'gato', 'dog': 'cachorro'}}
+'''
 
 
 
@@ -53,6 +101,13 @@ print(.7) # 0.7
 print(1000000) # 1000000
 print(1_000_000) # 1000000
 
+print(5 and 7) # 7 (5 is truthy, so returns the second value)
+print(False and 7 or 10) # 10 (False is falsy, so returns the third value)
+print(None and 7 or 10) # 10 (None is falsy, so returns the third value)
+print(False and 7) # False (False is falsy, so returns itself, since there is no third value)
+print(None and 7) # None (None is falsy, so returns itself, since there is no third value)
+print(0 and 7) # 0 (0 is falsy in Python!)
+
 print("Hello, world.")
 
 # string format
@@ -62,7 +117,7 @@ print(f"foo = {foo}")
 # float division
 print(5 / 2) # 2.5
 # integer division (ignores value after `.`)
-print(5 // 2) # 2
+print(5 // 2) # 2 # Same as math.floor(5 / 2)
 # same as above
 import math
 print(math.floor(5 / 2))
@@ -80,6 +135,116 @@ del x
 '''
 # print(7) print(8) # Statements must be separated by newlines or semicolons
 print(7); print(8) # 7 8
+'''
+
+# Comparing variables (by reference vs by value)
+'''
+x = [1, 2, 3]
+y = [1, 2, 3]
+z = x
+a = 'banana'
+b = 'banana'
+
+print(x is y) # False # Even if the lists have the same content, it creates two separate list objects in memory, so `x` and `y` point (reference) to different objects
+print(x is z) # True # `x` and `z` point (reference) to the same object
+
+# Avoid using `is` when comparing strings!
+print(a is b) # True # Small strings with the same value are stored in the same memory location (string interning), so `a` and `b` point (reference) to the exact same object; this may be `False` if the strings are too long or dynamic
+print(a == b) # True # Comparing by value (safe comparation) - Checks if the values are the same, not the memory location (reference); since both strings contain 'banana', the result is True
+
+# In short, use `is` to compare by reference and `==` to compare by value
+'''
+
+
+
+# Ternary conditional operator
+
+'''
+x = 7
+print(10 if x < 10 else 20) # 10
+print(10 if x > 10 else 20) # 20
+y = 10 if x > 10 else 20
+print(y) # 20
+
+def factorial(n):
+  return 1 if n == 0 else n * factorial(n-1)
+'''
+
+
+
+# List comprehensions
+# List comprehensions are a concise way to create lists in Python.
+
+'''
+# List comprehensions are typically faster than their equivalent "for" loops, sometimes much faster.
+# But they are harder to debug because you can't have print statements inside the loop.
+# Use them only if the calculation is simple enough that you can get it right the first time.
+
+def capitalize_all(t):
+  res = []
+  for s in t:
+    res.append(s.capitalize())
+  return res
+
+def capitalize_all(t):
+  return [s.capitalize() for s in t]
+
+def only_upper(t):
+  res = []
+  for s in t:
+    if s.isupper():
+      res.append(s)
+  return res
+
+def only_upper(t):
+  return [s for s in t if s.isupper()]
+'''
+
+
+
+# Generator expressions
+# Generator expressions are like list comprehensions, but they return an iterator instead of a list.
+# On the contrary to list comprehensions, they are not calculated all at once, but only when you iterate over them.
+# A generator cannot be reset. To "go back to the beginning", you need to recreate the generator.
+# Generator expressions are often used with functions such as sum(...), max(...) and min(...).
+
+'''
+gen = (x**2 for x in range(5))
+print(gen) # <generator object <genexpr> at 0x000001E70D67B440>
+print(next(gen)) # 0
+print(next(gen)) # 1
+print(next(gen)) # 4
+print(next(gen)) # 9
+print(next(gen)) # 16
+# print(next(gen)) # StopIteration: no more items in the generator
+
+for val in (x**2 for x in range(5)):
+  print(val) # 0; 1; 4; 9; 16
+'''
+
+
+
+# any and all
+# The `any()` function returns True if at least one element of the iterable is True, otherwise it returns False.
+# The `all()` function returns True if all elements of the iterable are True, otherwise it returns False.
+
+'''
+any([False, False, True]) # True
+
+any(letter == 't' for letter in 'monty') # True
+# This example is not very useful because it does the same thing as the in operator:
+'t' in 'monty'
+
+# Check if a word has no letters from a banned list
+def avoids(word, forbidden):
+  for letter in word:
+    if letter in forbidden:
+      return False
+  return True
+def avoids(word, forbidden):
+  return not any(letter in forbidden for letter in word) # Here, `not any` ensures that no letter in the word is on the banned list
+def avoids(word, forbidden):
+  return all(letter not in forbidden for letter in word) # Here, `all` ensures that all letters in the word are not on the banned list
 '''
 
 
@@ -100,16 +265,46 @@ print(x, y, z)
 # Type
 
 '''
+# Checks if `n` is an instance of `int` or of any subclass that inherits from `int`
+# isinstance(n, int)
+
+# Checks if the type of `n` is exactly `int`, ignoring the inheritance hierarchy
+# type(n) == int
+
 a = 7
 b = int(7)
 c = 7.0
 d = float(7)
 e = '7'
-print(type(a), type(b), type(c), type(d), type(e))
+f = (1, 2, 3)
+g = (7,500) -- tuple in which g[0] is 7 and g[1] is 500
+print(type(a), type(b), type(c), type(d), type(e), type(f), type(g))
+
+print(isinstance(a, int)) # True
+print(isinstance(a, float)) # False
+print(isinstance(a, bool)) # False
 '''
 '''
 # print('Number: ' + 7) # TypeError: can only concatenate str (not "int") to str
 print('Number: ' + str(7)) # Solution
+'''
+'''
+from functools import singledispatch
+
+@singledispatch
+def sum(a, b):
+  raise NotImplementedError("Tipo não suportado")
+
+@sum.register
+def _(a: int, b: int):
+  return a + b
+
+@sum.register
+def _(a: float, b: float):
+  return a + b
+
+print(sum(2, 3))     # 5  -> int
+print(sum(2.5, 3.5)) # 6.0 -> float
 '''
 
 
@@ -118,7 +313,12 @@ print('Number: ' + str(7)) # Solution
 
 '''
 import random
+
+print(random.random()) # Number between 0 and 1, including 0 but not 1
 print(random.randint(3,7)) # Numbers between 3 to 7
+print(random.randrange(3,7)) # Numbers between 3 to 6
+print(random.randrange(3,9,2)) # Numbers between 3 to 6, only odd numbers (3, 5 and 7)
+print(random.choice(['a', 'b', 'c', 'd'])) # Randomly chooses one of the values
 '''
 
 
@@ -171,10 +371,12 @@ print(bin(0b1010 ^ 0b0010)) # 0b1000 (if they are different - 1 and the other 0 
 
 
 
+# Time
 
-
-
-
+'''
+import time
+print(time.time())
+'''
 
 
 

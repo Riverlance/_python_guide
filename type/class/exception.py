@@ -56,6 +56,14 @@ foo() # 1 3
 def foo(raise_error):
   if raise_error:
     raise ValueError('This is a value error message')
+
+def reverse_lookup(dictionary, value): # Attempt to find `value` in `dictionary`
+  for k in dictionary:
+    if dictionary[k] == value:
+      return k
+  raise LookupError() # raise an exception if not found in `dictionary`
+d = { 'cat': 'gato', 'dog': 'cachorro' }
+print(reverse_lookup(d, 'papagaio')) # Traceback: raise LookupError()
 '''
 
 # Nothing happens

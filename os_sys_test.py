@@ -1,4 +1,4 @@
-import os, sys, subprocess
+import os, sys, subprocess, hashlib
 
 
 
@@ -9,7 +9,7 @@ import os, sys, subprocess
 print(os.getpid())
 '''
 
-# Actual path (work path)
+# Actual work directory (cwd)
 # print(os.getcwd()) # D:\River\code\Python\_projects\pytest
 
 # Change directory
@@ -31,6 +31,15 @@ os.rmdir('my_folder')
 # Readmore: https://www.youtube.com/watch?v=j-8md7xIqWc&list=PLfCKf0-awunOu2WyLe2pSD2fXUo795xRe&index=114
 '''
 print(os.listdir())
+
+# "walks" through a directory, prints the names of all files, and calls itself recursively on all directories
+def walk(dirname):
+  for name in os.listdir(dirname):
+    path = os.path.join(dirname, name)
+    if os.path.isfile(path):
+      print(path)
+    else:
+      walk(path)
 '''
 
 # Rename
@@ -69,15 +78,15 @@ print((os.pathsep, os.sep, os.pardir, os.curdir, os.linesep)) # (';', '\\', '..'
 
 '''
 # isdir
-print(os.path.isdir('package_test')) # True
+print(os.path.isdir('module')) # True
 print(os.path.isdir('os_sys_test.py')) # False
 
 # isfile
-print(os.path.isfile('package_test')) # False
+print(os.path.isfile('module')) # False
 print(os.path.isfile('os_sys_test.py')) # True
 
 # exists
-print(os.path.exists('package_test')) # True
+print(os.path.exists('module')) # True
 print(os.path.exists('os_sys_test.py')) # True
 
 # getsize
@@ -86,19 +95,19 @@ print(os.path.getsize('os_sys_test.py')) # 2139 # (bytes)
 
 # split
 # Split path and file.
-# print(os.path.split(f'package_test{os.sep}import_test.py')) # ('package_test', 'import_test.py')
+# print(os.path.split(f'module{os.sep}module_example.py')) # ('module', 'module_example.py')
 
 # join
 # Join path and file.
-# print(os.path.join('package_test', 'import_test.py')) # package_test\import_test.py
+# print(os.path.join('module', 'module_example.py')) # module\module_example.py
 
 # dirname
 # Get directory path of path.
-# print(os.path.dirname(f'package_test{os.sep}import_test.py')) # package_test
+# print(os.path.dirname(f'module{os.sep}module_example.py')) # module
 
 # basename
 # Get the final component of path.
-# print(os.path.basename(f'package_test{os.sep}import_test.py')) # import_test.py
+# print(os.path.basename(f'module{os.sep}module_example.py')) # module_example.py
 
 # splittext
 # Split the extension from a pathname.
@@ -109,39 +118,85 @@ print(os.path.getsize('os_sys_test.py')) # 2139 # (bytes)
 # print(os.path.normpath('')) # .
 # print(os.path.normpath('.')) # .
 # print(os.path.normpath('..')) # ..
-# print(os.path.normpath('package_test/import_test.py')) # package_test\import_test.py
-# print(os.path.normpath(r'package_test\\import_test.py')) # package_test\import_test.py
+# print(os.path.normpath('module/module_example.py')) # module\module_example.py
+# print(os.path.normpath(r'module\\module_example.py')) # module\module_example.py
 
 # abspath (absolute path)
 # print(os.path.abspath('')) # D:\River\code\Python\_projects\pytest
 # print(os.path.abspath('.')) # D:\River\code\Python\_projects\pytest
 # print(os.path.abspath('..')) # D:\River\code\Python\_projects
-# print(os.path.abspath('package_test/import_test.py')) # D:\River\code\Python\_projects\pytest\package_test\import_test.py
-# print(os.path.abspath(r'package_test\\import_test.py')) # D:\River\code\Python\_projects\pytest\package_test\import_test.py
+# print(os.path.abspath('module/module_example.py')) # D:\River\code\Python\_projects\pytest\module\module_example.py
+# print(os.path.abspath(r'module\\module_example.py')) # D:\River\code\Python\_projects\pytest\module\module_example.py
 
 # Execute terminal command, returning error of execution (0 means no error)
 
 '''
 # Execute terminal command 'type', that reads the file 'file.txt'
-os.system(r'type data\assets\file.txt')
+os.system(r'type data\assets\file_1.txt')
 
 # os.system('dir')
-os.system('dir package_test')
+os.system('dir module')
 '''
 
 # Execute terminal command and stores its return.
 
 '''
-command = os.popen(r'type data\assets\file.txt')
-print(command.read())
+fp = os.popen('ls -l')
+print(fp) # <os._wrap_close object at 0x77ae42d44b00>
+print(fp.read())
+# total 8
+# -rwxr-xr-x 1 riverlance registered_users 232 Aug  5 17:56 README.txt
+# -rw-rw-r-- 1 riverlance registered_users  62 Aug 12 20:50 hello.py
+fp.close()
 
-command = os.popen(r'type data\assets\file.txt')
+fp = os.popen('ls -l')
+for line in fp.readlines():
+  print(line, end='')
+# total 8
+# -rwxr-xr-x 1 riverlance registered_users 232 Aug  5 17:56 README.txt
+# -rw-rw-r-- 1 riverlance registered_users  62 Aug 12 20:50 hello.py
+fp.close()
+'''
+'''
+command = os.popen(r'type data\assets\file_1.txt')
+print(command.read())
+command.close()
+
+command = os.popen(r'type data\assets\file_1.txt')
 print(command.readlines())
+command.close()
 '''
 
 
 
+# sha1
 
+'''
+with open(r"data\assets\file_1.txt", "rb") as f:
+  print(hashlib.sha1(f.read()).hexdigest())
+'''
+
+# sha256
+
+'''
+with open(r"data\assets\file_1.txt", "rb") as f:
+  print(hashlib.sha256(f.read()).hexdigest())
+'''
+
+# sha512
+
+'''
+with open(r"data\assets\file_1.txt", "rb") as f:
+  print(hashlib.sha512(f.read()).hexdigest())
+'''
+
+# md5
+# Readmore: https://www.geeksforgeeks.org/python/md5-hash-python/
+
+'''
+with open(r"data\assets\file_1.txt", "rb") as f:
+  print(hashlib.md5(f.read()).hexdigest())
+'''
 
 
 

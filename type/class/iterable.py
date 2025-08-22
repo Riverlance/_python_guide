@@ -1,5 +1,42 @@
 # Iterable class
 
+# Iterators are similar to lists in some ways, but unlike lists, you cannot use an index to select an element from an iterator.
+
+'''
+s = 'abc'
+t = [0, 1, 2]
+for pair in zip(s, t):
+  print(pair) # ('a', 0); ('b', 1); ('c', 2)
+
+# If you want to use list operators and methods, you can use a zip object to make a list
+t2 = list(zip(s, t))
+print(t2) # [('a', 0), ('b', 1), ('c', 2)]
+# Iterate over the list of tuples
+for letter, number in t2:
+  print(number, letter) # 0 a; 1 b; 2 c
+
+# If the sequences are not the same length, the result is the length of the shorter one
+print(list(zip('Anne', 'Elk'))) # [('A', 'E'), ('n', 'l'), ('n', 'k')]
+
+# You can make a useful expression to iterate through two (or more) sequences at the same time
+def has_match(t1, t2):
+  for x, y in zip(t1, t2):
+    if x == y:
+      return True # There is an index i such that t1[i] == t2[i]
+  return False
+'''
+
+# Enumerate
+
+'''
+t1 = enumerate('hello')
+t2 = enumerate(['Sword', 'Axe', 'Club'], 1) # Start from 1
+for k, v in t1:
+  print(k, v) # 0 h; 1 e; 2 l; 3 l; 4 o
+for k, v in t2:
+  print(k, v) # 1 Sword; 2 Axe; 3 Club
+'''
+
 # Gets values according to SquareNumber1
 
 '''

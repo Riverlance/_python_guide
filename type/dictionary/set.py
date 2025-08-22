@@ -1,7 +1,8 @@
 # Set
-# Are a list of values as a dictionary, because they are unique values.
+# The set is like a list without order and without repetition.
+# Under the covers, it uses the same hash table structure as the dict, but it only stores keys (no values).
 # Its syntax remembers of dictionary, but has nothing to do with it.
-# Its order does not matters.
+# For iteration, it behaves like a dictionary, but it only returns the keys.
 
 
 
@@ -19,9 +20,14 @@ setv = {7, 8, 9}
 print(setv, type(setv)) # {8, 9, 7} <class 'set'>
 
 print(set('mississippi')) # {'m', 'i', 'p', 's'}
+
+dict = {7: 'a', 8: 'b', 9: 'c'}
+print(set(dict)) # {7, 8, 9} # Keys only
+print(set(dict.keys())) # {7, 8, 9} # Keys only
+print(set(dict.values())) # {'a', 'b', 'c'} # Values only
 '''
 
-# Its order does not matters.
+# No order
 '''
 # Example of dictionary just to compare with set
 for i in dict(zip([7, 8, 9], ['a', 'b', 'c'])).items():
@@ -30,6 +36,11 @@ for i in dict(zip([7, 8, 9], ['a', 'b', 'c'])).items():
 # Set
 for i in set([7, 8, 9]):
   print(i) # 8 9 7
+'''
+
+# No repetition
+'''
+print({1, 2, 2, 3}) # {1, 2, 3}
 '''
 
 # Update
@@ -60,6 +71,36 @@ print(s1 - s2) # {'A', 'E', 'C'} # s1 - s2 (you can also use it as s1.difference
 print(s1 ^ s2) # {'E', 'F', 'A', 'C'} # Unique items from both (you can also use it as s1.symmetric_difference(s2))
 print(s3 < s1) # True - If s3 is inside s1 (you can also use it as s3.issubset(s1))
 print(s1 > s3) # True - If s1 contains s3 (you can also use it as s1.issuperset(s3))
+'''
+
+# Examples of operations
+
+'''
+def has_duplicates(t):
+  d = { }
+  for x in t:
+    if x in d:
+      return True
+    d[x] = True
+  return False
+
+# An element can only appear in a set once, so if an element in t appears more than once, the set is smaller than t.
+# If there are no duplicates, the set is the same size as t.
+def has_duplicates(t):
+  return len(set(t)) < len(t)
+'''
+'''
+# Checks if all letters in word are available
+def uses_only(word, available):
+  for letter in word:
+    if letter not in available:
+      return False
+  return True
+
+# The <= operator checks whether a set is a subset or another.
+# Including the possibility that they are equal, which is true if all the letters of word appear in available.
+def uses_only(word, available):
+  return set(word) <= set(available)
 '''
 
 

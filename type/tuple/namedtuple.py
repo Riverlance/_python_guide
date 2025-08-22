@@ -1,9 +1,43 @@
 from collections import namedtuple
 
-# Named tuple
 
-# Base
 
+# Named tuples are subclasses of tuple with named fields.
+# They allow accessing values ​​by name or index, keeping the normal tuple operations.
+
+'''
+class Point:
+  def __init__(self, x=0, y=0):
+    self.x = x
+    self.y = y
+
+  def __str__(self):
+    return '(%g, %g)' % (self.x, self.y)
+
+Point = namedtuple('Point', ['x', 'y']) # Same as above
+
+point = Point(1, 2)
+print(point) # Point(x=1, y=2)
+
+# You can access the elements of the named tuple by name
+print(point.x) # 1
+print(point.y) # 2
+
+# But you can also treat a named tuple as a tuple
+print(point[0]) # 1
+print(point[1]) # 2
+point_x, point_y = point
+print(point_x) # 1
+print(point_y) # 2
+
+# Named tuples provide a quick way to define simple classes.
+# The problem is that simple classes don't always stay simple.
+# Later on, you might decide you want to add methods to a named tuple.
+# In this case, you can define a new class that inherits from the named tuple:
+class Pointier(Point): # extends from Point
+  pass # Add more methods in here
+# Or you could switch to a conventional class definition.
+'''
 '''
 nt_1 = namedtuple('Point', 'x y')
 nt_2 = namedtuple('Point', 'x, y')

@@ -2,6 +2,18 @@
 
 # Read values
 '''
+l = [2, 4, 7]
+print(l[0], l[1], l[2]) # 2 4 7
+l[1] = 10
+print(l[0], l[1], l[2]) # 2 10 7
+
+for x in []:
+  print('This never happens.')
+
+l = ['oi', 7, True, [10, 20]]
+print(l[0], l[1], l[2], l[3]) # oi 7 True [10, 20]
+print(type(l[0]), type(l[1]), type(l[2]), type(l[3])) # <class 'str'> <class 'int'> <class 'bool'> <class 'list'>
+
 empty_list_1 = list()
 empty_list_2 = []
 print(empty_list_1, type(empty_list_1)) # [] <class 'list'>
@@ -34,6 +46,17 @@ print(x, y)
 
 str = 'Hello'
 print(list(str)) # ['H', 'e', 'l', 'l', 'o']
+
+t = ['a', 'b', 'c', 'd', 'e', 'f']
+t[1:3] = ['X', 'Y']
+print(t) # ['a', 'X', 'Y', 'd', 'e', 'f']
+
+# Lists are passed by reference, not by value
+def delete_head(t):
+  del t[0]
+t = [1, 2, 3]
+delete_head(t)
+print(t) # [2, 3]
 '''
 
 # Loop on string
@@ -86,23 +109,37 @@ print(f'The arithmetic average of {numbers} is {statistics.mean(numbers)}')
 # Update values of list
 '''
 numbers = [2, 4, 7]
-# for v in numbers:
+# for v in numbers: # read-only
 #   v *= 2
 # print(numbers) # Still [2, 4, 7]
-for i in range(len(numbers)):
+
+for i in range(len(numbers)): # modifies by reference
   numbers[i] *= 2
-print(numbers)
+print(numbers) # [4, 8, 14]
 '''
 
 # Remove number
 '''
 numbers = [2, 4, 7]
+
+# By index
+
 del numbers[1]
 print(numbers) # [2, 7]
+
+t = ['a', 'b', 'c', 'd', 'e', 'f']
+del t[1:5]
+print(t) # ['a', 'f']
+
+# By value
+
+numbers.remove(7)
+print(numbers) # [2]
 '''
 
 # Add number
 '''
+# append inserts a value to the list
 numbers = [4]
 numbers.append(7)
 print(numbers) # [4, 7]
@@ -110,6 +147,22 @@ numbers.insert(0, 2)
 print(numbers) # [2, 4, 7]
 numbers.insert(2, 8)
 print(numbers) # [2, 4, 8, 7]
+
+# The operator + or [] creates another list
+t1 = [1, 2, 3]
+t2 = t1 + [4]
+t3 = t1[1:]
+print(t1) # [1, 2, 3] # t1 is not modified
+print(t2) # [1, 2, 3, 4] # t2 is another list created
+print(t3) # [2, 3] # t3 is another list created
+
+def wrong_delete_head(t):
+  t = t[1:] # This does nothing, since t becomes a copy, instead of modifying by a reference
+# Better approach:
+def tail(t):
+  return t[1:] # Still a copy, but returns the new list
+def delete_head(t):
+  del t[0] # Really deletes the first item of the list
 '''
 
 # Append & extend
@@ -125,6 +178,21 @@ l.extend([9, 10])
 print(l) # [3, [7, 8], 'Hi', 9, 10]
 l.extend('Hi')
 print(l) # [3, [7, 8], 'Hi', 9, 10, 'H', 'i']
+'''
+
+# Pop
+'''
+l = [1, 2, 3, 4]
+print(l) # [1, 2, 3, 4]
+print('Pop l[2]: ', l.pop(2)) # Pop l[2]:  3
+print(l) # [1, 2, 4]
+print('Pop LAST: ', l.pop()) # Pop LAST:  4
+print(l) # [1, 2]
+print('Pop FIRST: ', l.pop(0)) # Pop FIRST:  1
+print(l) # [2]
+print('Pop FIRST: ', l.pop(0)) # Pop FIRST:  2
+print(l) # []
+# print('Pop: ', l.pop()) # IndexError: pop from empty list
 '''
 
 # all (checks if all elements are valid)
@@ -148,6 +216,15 @@ print([9, 80, 700]) # 789
 '''
 l = [0, 1, 2, 3, 4, 5]
 print(list(filter((lambda x: x % 2 == 0), l))) # [0, 2, 4]
+
+l = [10, 5, 7, 1, 3, 8]
+l.sort()
+print(l) # [1, 3, 5, 7, 8, 10]
+
+l  = [10, 5, 7, 1, 3, 8]
+l2 = sorted(l) # Sort in a new list
+print(l) # [10, 5, 7, 1, 3, 8] # The original list is not modified
+print(l2) # [1, 3, 5, 7, 8, 10] # New list
 '''
 
 # Convert from map
@@ -174,6 +251,32 @@ list_keys = ['a', 'b', 'c']
 list_values = ['A', 'B', 'C']
 print(list(zip(list_keys, list_values))) # [('a', 'A'), ('b', 'B'), ('c', 'C')]
 print(list(zip(list_values, list_keys))) # [('A', 'a'), ('B', 'b'), ('C', 'c')]
+'''
+
+# Convert from string
+'''
+str_list = list(string)
+print(str_list) # ['A', 'B', 'C', ' ', 'a', 'b', 'c']
+str_list[0] = 'X'
+print('-'.join(str_list)) # X-B-C- -a-b-c
+str_list = ''.join(str_list)
+print(str_list) # XBC abc
+'''
+
+# Append multiple lists to a dictionary
+'''
+t = { }
+def append(t, k, v):
+  if k in t:
+    t[k].append(v)
+  else:
+    t[k] = [v] # Create a new list (singleton list, which is a list with only one element)
+append(t, 'A', 'x')
+append(t, 'A', 'y')
+append(t, 'B', 1)
+append(t, 'B', 2)
+append(t, 'B', 3)
+print(t) # {'A': ['x', 'y'], 'B': [1, 2, 3]}
 '''
 
 # See heapq.nlargest & heapq.nsmallest
